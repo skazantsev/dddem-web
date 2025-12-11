@@ -32,7 +32,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
           aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
-          aws configure set region eu-west-2
+          aws configure set region eu-north-1
           aws configure set output json
 
       - name: Deploy To S3
@@ -40,7 +40,7 @@ jobs:
           AWS_ACCESS_KEY: ${{ secrets.aws_access_key_actions }}
           AWS_SECRET_KEY: ${{ secrets.aws_secret_access_key_actions }}
         run: |
-          aws s3 sync ./out s3://www.dddeastmidlands.com --delete
+          aws s3 sync ./out s3://dddem-web-376058330285-eu-north-1 --delete
 
       - name: Invalidate Cache
         env:
