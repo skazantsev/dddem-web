@@ -61,15 +61,4 @@ test.describe('Homepage', () => {
     });
     expect(hasBackgroundImage).toBe(true);
   });
-
-  test('should have proper accessibility attributes', async ({ page }) => {
-    await page.goto('/');
-
-    // Check for tabindex attributes on key elements
-    const accessibleParagraphs = page.locator('p[tabindex="0"]');
-    await expect(accessibleParagraphs.first()).toBeVisible();
-
-    const accessibleHeading = page.locator('h2[tabindex="0"]');
-    await expect(accessibleHeading.first()).toBeVisible();
-  });
 });

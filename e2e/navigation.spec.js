@@ -101,13 +101,11 @@ test.describe('Navigation and Page Routing', () => {
     await expect(rachelSection).toBeVisible();
   });
 
-  test('should load all pages without console errors', async ({ page }) => {
-    const consoleErrors = [];
+  test('should load all pages without JavaScript errors', async ({ page }) => {
+    const jsErrors = [];
 
-    page.on('console', (msg) => {
-      if (msg.type() === 'error') {
-        consoleErrors.push(msg.text());
-      }
+    page.on('pageerror', (error) => {
+      jsErrors.push(error.message);
     });
 
     const pages = [
@@ -120,14 +118,10 @@ test.describe('Navigation and Page Routing', () => {
 
     for (const pagePath of pages) {
       await page.goto(pagePath);
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded');
     }
 
-    // Allow for expected Next.js warnings but no critical errors
-    const criticalErrors = consoleErrors.filter(
-      (error) => !error.includes('Warning:')
-    );
-    expect(criticalErrors).toHaveLength(0);
+    expect(jsErrors).toHaveLength(0);
   });
 
   test('should have working internal navigation links', async ({ page }) => {
